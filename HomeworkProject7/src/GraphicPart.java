@@ -10,6 +10,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.scene.input.KeyCode;
@@ -28,6 +29,7 @@ public class GraphicPart extends Application {
 	TimerClass myTimer;
 	int numCues;
 	int numLines;
+	String[] lineArray = new String[2];
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		launch(args);
@@ -52,7 +54,7 @@ public class GraphicPart extends Application {
 		HBox button = new HBox(nextButton);
 		myPane.add(button, 0, 2);
 		Group root = new Group(myPane);
-		scene = new Scene(root, 500, 500);
+		scene = new Scene(root, 500, 500, Color.BLANCHEDALMOND);
 		primaryStage.setScene(scene);
 		primaryStage.show();
 	}
@@ -72,7 +74,9 @@ public class GraphicPart extends Application {
 		ArrayList<String> possibleAnswers = new ArrayList<String>();
 		possibleAnswers.add("Congrats you got it right!");
 		possibleAnswers.add("You got it wrong");
-		firstLine myLine = new firstLine(firstCue, firstLine, possibleAnswers);
+		lineArray[0] = firstCue;
+		lineArray[1] = firstLine;
+		Line myLine = new firstLine(lineArray[1], lineArray[0], possibleAnswers); //polymorphic call 
 		String ifCorrect = myLine.testLine(possibleAnswers);
 		textCorrect.setText(ifCorrect);
 		textField.clear();
@@ -83,6 +87,14 @@ public class GraphicPart extends Application {
 		myPane.add(paidButton1, 0, 2);
 		myTimer = new TimerClass();
 		scene.setOnKeyPressed(this::listenUp);
+		Button sort = new Button("Would you like to sort the lines");
+		sort.setOnAction(this::sort);
+		HBox sortButton = new HBox(sort);
+		myPane.add(sortButton, 0, 3);
+	}
+	public void sort(ActionEvent args) {
+		Sorting mySort = new Sorting();
+		mySort.selectionSort(lineArray);
 	}
 	public void listenUp(KeyEvent event) {
 		KeyCode myCode = event.getCode();
