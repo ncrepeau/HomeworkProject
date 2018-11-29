@@ -18,6 +18,7 @@ import javafx.scene.input.KeyEvent;
 
 public class GraphicPart extends Application {
 	TextField textField;
+	TextField searchTarget;
 	GridPane myPane;
 	String firstLine;
 	String firstCue;
@@ -91,6 +92,24 @@ public class GraphicPart extends Application {
 		sort.setOnAction(this::sort);
 		HBox sortButton = new HBox(sort);
 		myPane.add(sortButton, 0, 3);
+		Button search = new Button("Would you like to search for a line?");
+		search.setOnAction(this::search);
+		HBox searchButton = new HBox(search);
+		myPane.add(searchButton, 0, 4);
+		searchTarget = new TextField("Enter the line you would like to search for");
+		myPane.add(searchTarget, 0, 5);
+	}
+	public void search(ActionEvent args) {
+		Searching mySearch = new Searching();
+		String target = searchTarget.getText();
+		Text searchText = new Text("");
+		myPane.add(searchText, 0, 6);
+		if(mySearch.linearSearch(lineArray, target).equals(null)) {
+			searchText.setText("This line exists");
+	
+		}else {
+			searchText.setText("This line does not exist");
+		}
 	}
 	public void sort(ActionEvent args) {
 		Sorting mySort = new Sorting();
@@ -99,7 +118,7 @@ public class GraphicPart extends Application {
 	public void listenUp(KeyEvent event) {
 		KeyCode myCode = event.getCode();
 		if(myCode == KeyCode.W) {
-			myPane.add(dog, 3, 3);
+			myPane.add(dog, 7, 7);
 			myTimer.stopTimer();
 		}
 	}
